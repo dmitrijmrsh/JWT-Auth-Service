@@ -1,4 +1,4 @@
-package com.dmitrijmrsh.jwt.auth.service.secutiry;
+package com.dmitrijmrsh.jwt.auth.service.security;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;

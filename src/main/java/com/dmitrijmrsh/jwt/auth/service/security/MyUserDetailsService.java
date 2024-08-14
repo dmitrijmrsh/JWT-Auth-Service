@@ -1,4 +1,4 @@
-package com.dmitrijmrsh.jwt.auth.service.secutiry;
+package com.dmitrijmrsh.jwt.auth.service.security;
 
 import com.dmitrijmrsh.jwt.auth.service.entity.User;
 import com.dmitrijmrsh.jwt.auth.service.repository.UserRepository;
