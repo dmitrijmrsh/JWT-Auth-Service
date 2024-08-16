@@ -23,12 +23,12 @@ public class User {
     @Column(name = "c_username", nullable = false, unique = true)
     private String username;
 
-    @Column(name = "c_email", nullable = false, unique = true)
-    private String email;
-
     @Column(name = "c_password", nullable = false)
     @Size(min = 8, message = "Password size should be at least 8 characters")
     private String password;
+
+    @Column(name = "c_email", nullable = false, unique = true)
+    private String email;
 
     @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(name = "t_user_authority",

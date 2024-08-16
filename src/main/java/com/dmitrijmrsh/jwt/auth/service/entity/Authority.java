@@ -1,5 +1,6 @@
 package com.dmitrijmrsh.jwt.auth.service.entity;
 
+import com.dmitrijmrsh.jwt.auth.service.entity.enums.UserAuthorityEnum;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -20,11 +21,17 @@ public class Authority implements GrantedAuthority {
     private Integer id;
 
     @Column(name = "c_authority", nullable = false, unique = true)
-    private String authority;
+    @Enumerated(EnumType.STRING)
+    private UserAuthorityEnum authority;
 
     @ManyToMany(cascade = CascadeType.ALL)
-    @JoinTable(name = "c_user_authority",
+    @JoinTable(name = "t_user_authority",
                joinColumns = @JoinColumn(name = "authority_id", referencedColumnName = "id"),
                inverseJoinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"))
     private List<User> users;
+
+    @Override
+    public String getAuthority() {
+        return authority.getAuthorityInString();
+    }
 }

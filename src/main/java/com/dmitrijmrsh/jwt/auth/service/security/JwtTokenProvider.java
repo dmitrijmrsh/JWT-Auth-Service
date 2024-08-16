@@ -21,8 +21,8 @@ import java.util.Base64;
 import java.util.Date;
 import java.util.List;
 
-@Component
 @RequiredArgsConstructor
+@Component
 public class JwtTokenProvider {
 
     private final MyUserDetailsService userDetailsService;
