@@ -1,10 +1,10 @@
 package com.dmitrijmrsh.jwt.auth.service.service;
 
-import com.dmitrijmrsh.jwt.auth.service.entity.User;
-
-import java.util.AbstractMap;
+import com.dmitrijmrsh.jwt.auth.service.payload.GetUserInfoPayload;
+import com.dmitrijmrsh.jwt.auth.service.payload.UserLogInPayload;
+import com.dmitrijmrsh.jwt.auth.service.payload.UserSignUpPayload;
 
 public interface UserAuthService {
-    String login(String username, String password);
-    AbstractMap.SimpleEntry<User, String> signup(String username, String password, String email);
+    GetUserInfoPayload signup(UserSignUpPayload userSignUpPayload);
+    String login(UserLogInPayload userLogInPayload);
 }

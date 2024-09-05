@@ -1,18 +1,21 @@
 package com.dmitrijmrsh.jwt.auth.service.controller;
 
-import com.dmitrijmrsh.jwt.auth.service.controller.payload.UserLogInPayload;
-import com.dmitrijmrsh.jwt.auth.service.controller.payload.UserSignUpPayload;
-import com.dmitrijmrsh.jwt.auth.service.entity.User;
+import com.dmitrijmrsh.jwt.auth.service.payload.GetUserInfoPayload;
+import com.dmitrijmrsh.jwt.auth.service.payload.UserLogInPayload;
+import com.dmitrijmrsh.jwt.auth.service.payload.UserSignUpPayload;
+import com.dmitrijmrsh.jwt.auth.service.repository.UserRepository;
 import com.dmitrijmrsh.jwt.auth.service.service.UserAuthService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindException;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.AbstractMap;
 import java.util.Map;
 
-@Slf4j
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/auth")
@@ -20,36 +23,45 @@ public class UserAuthRestController {
 
     private final UserAuthService userAuthService;
 
-    @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestBody UserLogInPayload userLogInPayload) {
+    @PostMapping("/signup")
+    public ResponseEntity<?> signup(
+            @Valid @RequestBody UserSignUpPayload userSignUpPayload,
+            BindingResult bindingResult
+    ) throws BindException {
 
-        log.info("Entered /login auth-controller method");
+        if (bindingResult.hasErrors()) {
+            if (bindingResult instanceof BindException exception) {
+                throw exception;
+            }
 
-        String jwtToken = userAuthService.login(userLogInPayload.username(), userLogInPayload.password());
-        return ResponseEntity.ok().body(Map.of("token", jwtToken));
+            throw new BindException(bindingResult);
+        }
 
+        GetUserInfoPayload userInfoPayload = userAuthService.signup(userSignUpPayload);
+
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body(userInfoPayload);
     }
 
-    @PostMapping("/signup")
-    public ResponseEntity<?> signup(@RequestBody UserSignUpPayload userSignUpPayload) {
+    @PostMapping("/login")
+    public ResponseEntity<?> login(
+            @Valid @RequestBody UserLogInPayload userLogInPayload,
+            BindingResult bindingResult
+    ) throws BindException {
 
-        log.info("Entered /signup auth-controller method");
+        if (bindingResult.hasErrors()) {
+            if (bindingResult instanceof BindException exception) {
+                throw exception;
+            }
 
-        AbstractMap.SimpleEntry<User, String> userToTokenMapping = userAuthService.signup(
-                userSignUpPayload.username(),
-                userSignUpPayload.password(),
-                userSignUpPayload.email()
-        );
+            throw new BindException(bindingResult);
+        }
 
-        User user = userToTokenMapping.getKey();
-        String jwtToken = userToTokenMapping.getValue();
+        String token = userAuthService.login(userLogInPayload);
 
-        return ResponseEntity.ok().body(Map.of(
-                "username", user.getUsername(),
-                "password", user.getPassword(),
-                "email", user.getEmail(),
-                "token", jwtToken
-        ));
-
+        return ResponseEntity.ok()
+                .body(Map.of(
+                        "token", token
+                ));
     }
 }

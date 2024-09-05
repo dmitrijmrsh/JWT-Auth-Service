@@ -25,7 +25,11 @@ public class JwtTokenFilter extends OncePerRequestFilter {
     private final JwtTokenProvider jwtTokenProvider;
 
     @Override
-    protected void doFilterInternal(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, FilterChain filterChain) throws ServletException, IOException {
+    protected void doFilterInternal(
+            HttpServletRequest httpServletRequest,
+            HttpServletResponse httpServletResponse,
+            FilterChain filterChain
+    ) throws ServletException, IOException {
         String token = jwtTokenProvider.resolveToken(httpServletRequest);
 
         log.info("Entered token filter method");
@@ -41,6 +45,8 @@ public class JwtTokenFilter extends OncePerRequestFilter {
             httpServletResponse.sendError(ex.getHttpStatus().value(), ex.getMessage());
             return;
         }
+
+        log.info("Left try/catch block in token filter method");
 
         filterChain.doFilter(httpServletRequest, httpServletResponse);
     }

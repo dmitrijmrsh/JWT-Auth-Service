@@ -1,12 +1,12 @@
 package com.dmitrijmrsh.jwt.auth.service.entity;
 
+import com.dmitrijmrsh.jwt.auth.service.entity.enums.UserPrivilegeEnum;
+import com.dmitrijmrsh.jwt.auth.service.entity.enums.UserRoleEnum;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-import java.util.List;
 
 @Data
 @NoArgsConstructor
@@ -19,20 +19,23 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @Size(min = 4, max = 255, message = "Username size should be from 4 to 255")
-    @Column(name = "c_username", nullable = false, unique = true)
-    private String username;
+    @Column(name = "c_first_name")
+    private String firstName;
 
-    @Column(name = "c_password", nullable = false)
-    @Size(min = 8, message = "Password size should be at least 8 characters")
-    private String password;
+    @Column(name = "c_last_name")
+    private String lastName;
 
-    @Column(name = "c_email", nullable = false, unique = true)
+    @Column(name = "c_email")
     private String email;
 
-    @ManyToMany(cascade = CascadeType.ALL)
-    @JoinTable(name = "t_user_authority",
-               joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
-               inverseJoinColumns = @JoinColumn(name = "authority_id", referencedColumnName = "id"))
-    private List<Authority> authorities;
+    @Column(name = "c_password")
+    private String password;
+
+    @Column(name = "c_role")
+    @Enumerated(EnumType.STRING)
+    private UserRoleEnum role;
+
+    @Column(name = "c_privilege")
+    @Enumerated(EnumType.STRING)
+    private UserPrivilegeEnum privilege;
 }
