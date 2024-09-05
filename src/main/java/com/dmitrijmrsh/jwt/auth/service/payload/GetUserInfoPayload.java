@@ -1,6 +1,5 @@
 package com.dmitrijmrsh.jwt.auth.service.payload;
 
-import com.dmitrijmrsh.jwt.auth.service.entity.enums.UserPrivilegeEnum;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
@@ -27,6 +26,6 @@ public record GetUserInfoPayload(
                 regexp = "PRIVILEGE_STANDARD|PRIVILEGE_HIGH|PRIVILEGE_VIP",
                 message = "{user.data.validation.errors.privilege.does.not.exist}"
         )
-        UserPrivilegeEnum privilege
+        String privilege
 ) {
 }

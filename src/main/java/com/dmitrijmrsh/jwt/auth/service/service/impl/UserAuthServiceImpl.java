@@ -76,7 +76,7 @@ public class UserAuthServiceImpl implements UserAuthService {
                 user.getFirstName(),
                 user.getLastName(),
                 user.getEmail(),
-                user.getPrivilege()
+                user.getPrivilege().getPrivilegeInString()
         );
     }
 

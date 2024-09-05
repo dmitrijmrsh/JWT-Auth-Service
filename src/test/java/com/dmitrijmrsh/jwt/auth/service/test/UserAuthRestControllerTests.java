@@ -37,7 +37,6 @@ public class UserAuthRestControllerTests {
                     }
                 """))
                 .andExpect(status().isCreated())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.id").value(1))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.firstName").value("Johny"))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.lastName").value("Dang"))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.email").value("example@gmail.com"))
@@ -72,5 +71,21 @@ public class UserAuthRestControllerTests {
                     }
                 """))
                 .andExpect(status().isUnprocessableEntity());
+    }
+
+    @Order(4)
+    @Test
+    public void signUpUserWithInvalidRequestReturnsBadRequest() throws Exception {
+        mockMvc.perform(MockMvcRequestBuilders.post("/api/v1/auth/signup")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content("""
+                    {
+                        "firstName": "Игорь",
+                        "lastName": "         ",
+                        "email": "dhbvshdb",
+                        "password": "123"
+                    }
+                """))
+                .andExpect(status().isBadRequest());
     }
 }

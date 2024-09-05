@@ -37,7 +37,7 @@ public class UserServiceImpl implements UserService {
                 user.getFirstName(),
                 user.getLastName(),
                 user.getEmail(),
-                user.getPrivilege()
+                user.getPrivilege().getPrivilegeInString()
         );
     }
 
@@ -69,7 +69,7 @@ public class UserServiceImpl implements UserService {
                 updateUserPayload.firstName(),
                 updateUserPayload.lastName(),
                 updateUserPayload.email(),
-                userPrivilege[0]
+                userPrivilege[0].getPrivilegeInString()
         );
     }
 
