@@ -17,7 +17,6 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
 
-@Slf4j
 @Component
 @RequiredArgsConstructor
 public class JwtTokenFilter extends OncePerRequestFilter {
@@ -32,11 +31,8 @@ public class JwtTokenFilter extends OncePerRequestFilter {
     ) throws ServletException, IOException {
         String token = jwtTokenProvider.resolveToken(httpServletRequest);
 
-        log.info("Entered token filter method");
-
         try {
             if (token != null && jwtTokenProvider.validateToken(token)) {
-                log.info("Token is not null");
                 Authentication authentication = jwtTokenProvider.getAuthentication(token);
                 SecurityContextHolder.getContext().setAuthentication(authentication);
             }
@@ -45,8 +41,6 @@ public class JwtTokenFilter extends OncePerRequestFilter {
             httpServletResponse.sendError(ex.getHttpStatus().value(), ex.getMessage());
             return;
         }
-
-        log.info("Left try/catch block in token filter method");
 
         filterChain.doFilter(httpServletRequest, httpServletResponse);
     }

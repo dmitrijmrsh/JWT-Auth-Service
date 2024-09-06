@@ -1,0 +1,1 @@
+create database jwt_auth_service_db;
