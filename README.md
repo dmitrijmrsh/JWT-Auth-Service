@@ -6,4 +6,6 @@
 - Spring Boot
 - Spring Security
 - Spring Data
+- PostgreSQL
+- Liquibase
 - JUnit5
